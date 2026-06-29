@@ -1,0 +1,53 @@
+{
+  "Kano": {
+    "S_No": "S/No",
+    "Age": "AGE",
+    "Gender": "GENDER",
+    "RDT": "RDT",
+    "PCR": "Fal.PCR"
+  },
+  "Gombe": {
+    "S_No": "S/No",
+    "Age": "Age(months)",
+    "Gender": "Gender",
+    "RDT": "RDT RESULT",
+    "PCR": "PCR Pf"
+  },
+  "Ogbomosho": {
+    "S_No": " ",
+    "Name": "NAME",
+    "Age": "Age",
+    "Gender": "Gender        ",
+    "RDT": "RDT",
+    "PCR": "PCR FAL",
+    "K1": "K1",
+    "K1_sizes": "K1 SISE",
+    "MAD20": "MAD20",
+    "MAD20_sizes": "MAD20 SIZE",
+    "RO33": "RO33",
+    "RO33_sizes": "RO33 SIZE",
+    "FC27": "FC27",
+    "FC27_sizes": "FC27 SIZE",
+    "3D7": "3D7",
+    "3D7_sizes": "3D7 SIZE"
+  },
+  "Bayelsa": {
+    "S_No": "S/No",
+    "Age": "Age",
+    "Gender": "Gender",
+    "RDT": "RDT",
+    "PCR": "PCR RESULT"
+  },
+  "Yobe": {
+    "S_No": "S/No",
+    "Age": "AGE",
+    "Gender": "GENDER",
+    "RDT": "RDT",
+    "PCR": "PCR",
+    "K1": "K1",
+    "MAD20": "MAD20",
+    "RO33": "RO33",
+    "FC27": "FC27",
+    "3D7": "3D7"
+  }
+}

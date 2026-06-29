@@ -1,0 +1,25 @@
+import os
+
+rule all:
+    input:
+        "data/conformed/1_Master_All_Samples.xlsx",
+        "data/conformed/2_HRP2_Deletions.xlsx",
+        "data/conformed/3_MSP_Genotyping.xlsx",
+        "data/analytical/STATISTICAL_ANALYSIS_RESULTS.xlsx"
+
+rule run_pipeline:
+    input:
+        "data/raw/Kano State#.xlsx",
+        "data/raw/Gombe State#.xlsx",
+        "data/raw/Ogbomosho#.xlsx",
+        "data/raw/Bayelsa#.xlsx",
+        "data/raw/MALARIA YOBE#.xlsx",
+        "data/raw/OWERRRI.xlsx",
+        "data/raw/CLEANED_DATASET.xlsx"
+    output:
+        "data/conformed/1_Master_All_Samples.xlsx",
+        "data/conformed/2_HRP2_Deletions.xlsx",
+        "data/conformed/3_MSP_Genotyping.xlsx",
+        "data/analytical/STATISTICAL_ANALYSIS_RESULTS.xlsx"
+    shell:
+        "python src/run_pipeline.py"

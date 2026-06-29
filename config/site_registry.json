@@ -1,0 +1,37 @@
+{
+  "Kano": {
+    "raw_file": "Kano State#.xlsx",
+    "raw_sheet": "Sheet1",
+    "expected_rows": 200,
+    "published_denominator": 200,
+    "exclusions": []
+  },
+  "Gombe": {
+    "raw_file": "Gombe State#.xlsx",
+    "raw_sheet": "Sheet1",
+    "expected_rows": 198,
+    "published_denominator": 166,
+    "exclusions": ["missing_demographics"]
+  },
+  "Ogbomosho": {
+    "raw_file": "Ogbomosho#.xlsx",
+    "raw_sheet": "Sheet1",
+    "expected_rows": 154,
+    "published_denominator": 150,
+    "exclusions": ["sno_skip"]
+  },
+  "Bayelsa": {
+    "raw_file": "Bayelsa#.xlsx",
+    "raw_sheet": "Sheet1",
+    "expected_rows": 122,
+    "published_denominator": 122,
+    "exclusions": []
+  },
+  "Yobe": {
+    "raw_file": "MALARIA YOBE#.xlsx",
+    "raw_sheet": "Sheet2",
+    "expected_rows": 200,
+    "published_denominator": 189,
+    "exclusions": ["missing_RDT_or_PCR"]
+  }
+}
