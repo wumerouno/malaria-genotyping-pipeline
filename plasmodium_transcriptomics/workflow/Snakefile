@@ -1,0 +1,164 @@
+import os
+import pandas as pd
+
+# Load pipeline configuration
+configfile: "config/config.yaml"
+
+# Load sample metadata
+samples_df = pd.read_csv(config["samples_tsv"], sep="\t").set_index("sample_id")
+SAMPLES = list(samples_df.index)
+
+def get_run_id(wildcards):
+    return samples_df.loc[wildcards.sample, "run_id"]
+
+# Target outputs
+rule all:
+    input:
+        expand(os.path.join(config["qc_dir"], "{sample}_1_fastqc.html"), sample=SAMPLES),
+        expand(os.path.join(config["qc_dir"], "{sample}_2_fastqc.html"), sample=SAMPLES),
+        os.path.join(config["qc_dir"], "multiqc_report.html"),
+        expand(os.path.join(config["quant_dir"], "{sample}", "quant.sf"), sample=SAMPLES),
+        os.path.join(config["de_dir"], "diff_exp_results.csv"),
+        os.path.join(config["plot_dir"], "volcano_plot.png"),
+        os.path.join(config["plot_dir"], "pca_plot.png"),
+        os.path.join(config["plot_dir"], "heatmap_top50.png")
+
+# 1. Download reference files from PlasmoDB
+rule download_references:
+    output:
+        genome = os.path.join(config["reference_dir"], "genome.fasta"),
+        transcriptome = os.path.join(config["reference_dir"], "transcriptome.fasta"),
+        gff = os.path.join(config["reference_dir"], "annotation.gff")
+    log:
+        "logs/download_references.log"
+    script:
+        "scripts/download_references.py"
+
+# 2. Prepare decoy list and gentrome for Salmon
+rule create_decoys:
+    input:
+        genome = os.path.join(config["reference_dir"], "genome.fasta"),
+        transcriptome = os.path.join(config["reference_dir"], "transcriptome.fasta")
+    output:
+        decoys = os.path.join(config["reference_dir"], "decoys.txt"),
+        gentrome = os.path.join(config["reference_dir"], "gentrome.fasta")
+    log:
+        "logs/create_decoys.log"
+    script:
+        "scripts/create_decoy_list.py"
+
+# 3. Download raw FASTQ reads from NCBI SRA
+rule download_sra:
+    output:
+        fq1 = temp("data/raw/{sample}_1.fastq"),
+        fq2 = temp("data/raw/{sample}_2.fastq")
+    log:
+        "logs/download_sra_{sample}.log"
+    params:
+        run_id = get_run_id,
+        outdir = "data/raw"
+    threads: 2
+    shell:
+        """
+        # Download SRA run and extract FASTQ format
+        fasterq-dump --split-files --threads {threads} --outdir {params.outdir} {params.run_id} > {log} 2>&1
+        
+        # Rename SRA files to expected sample names
+        mv {params.outdir}/{params.run_id}_1.fastq {output.fq1} >> {log} 2>&1
+        mv {params.outdir}/{params.run_id}_2.fastq {output.fq2} >> {log} 2>&1
+        """
+
+# 4. Perform Quality Control using FastQC
+rule fastqc:
+    input:
+        fq1 = "data/raw/{sample}_1.fastq",
+        fq2 = "data/raw/{sample}_2.fastq"
+    output:
+        html1 = os.path.join(config["qc_dir"], "{sample}_1_fastqc.html"),
+        zip1 = os.path.join(config["qc_dir"], "{sample}_1_fastqc.zip"),
+        html2 = os.path.join(config["qc_dir"], "{sample}_2_fastqc.html"),
+        zip2 = os.path.join(config["qc_dir"], "{sample}_2_fastqc.zip")
+    log:
+        "logs/fastqc_{sample}.log"
+    params:
+        outdir = config["qc_dir"]
+    threads: 1
+    shell:
+        """
+        fastqc -o {params.outdir} -t {threads} {input.fq1} {input.fq2} > {log} 2>&1
+        """
+
+# 5. Compile QC results with MultiQC
+rule multiqc:
+    input:
+        expand(os.path.join(config["qc_dir"], "{sample}_1_fastqc.html"), sample=SAMPLES),
+        expand(os.path.join(config["qc_dir"], "{sample}_2_fastqc.html"), sample=SAMPLES)
+    output:
+        html = os.path.join(config["qc_dir"], "multiqc_report.html")
+    log:
+        "logs/multiqc.log"
+    params:
+        qc_dir = config["qc_dir"]
+    shell:
+        """
+        multiqc -o {params.qc_dir} -f {params.qc_dir} > {log} 2>&1
+        """
+
+# 6. Build Salmon Index (Decoy-aware)
+rule salmon_index:
+    input:
+        gentrome = os.path.join(config["reference_dir"], "gentrome.fasta"),
+        decoys = os.path.join(config["reference_dir"], "decoys.txt")
+    output:
+        directory(os.path.join(config["reference_dir"], "salmon_index"))
+    log:
+        "logs/salmon_index.log"
+    threads: 4
+    shell:
+        """
+        salmon index -t {input.gentrome} -d {input.decoys} -i {output} -p {threads} > {log} 2>&1
+        """
+
+# 7. Quantify transcript abundance with Salmon
+rule salmon_quant:
+    input:
+        fq1 = "data/raw/{sample}_1.fastq",
+        fq2 = "data/raw/{sample}_2.fastq",
+        index = os.path.join(config["reference_dir"], "salmon_index")
+    output:
+        quant = os.path.join(config["quant_dir"], "{sample}", "quant.sf"),
+        cmd_info = os.path.join(config["quant_dir"], "{sample}", "cmd_info.json")
+    log:
+        "logs/salmon_quant_{sample}.log"
+    params:
+        outdir = lambda wildcards, output: os.path.dirname(output.quant),
+        bootstraps = config["salmon_bootstrap_samples"]
+    threads: config["salmon_threads"]
+    shell:
+        """
+        salmon quant -i {input.index} -l A \
+            -1 {input.fq1} -2 {input.fq2} \
+            -p {threads} \
+            --numBootstraps {params.bootstraps} \
+            --validateMappings \
+            -o {params.outdir} > {log} 2>&1
+        """
+
+# 8. Run R Differential Expression analysis with DESeq2
+rule deseq2_analysis:
+    input:
+        quants = expand(os.path.join(config["quant_dir"], "{sample}", "quant.sf"), sample=SAMPLES),
+        samples = config["samples_tsv"],
+        gff = os.path.join(config["reference_dir"], "annotation.gff"),
+        config_yaml = "config/config.yaml"
+    output:
+        csv = os.path.join(config["de_dir"], "diff_exp_results.csv"),
+        volcano = os.path.join(config["plot_dir"], "volcano_plot.png"),
+        pca = os.path.join(config["plot_dir"], "pca_plot.png"),
+        heatmap = os.path.join(config["plot_dir"], "heatmap_top50.png")
+    log:
+        "logs/deseq2_analysis.log"
+    shell:
+        """
+        Rscript src/deseq2_analysis.R > {log} 2>&1
+        """

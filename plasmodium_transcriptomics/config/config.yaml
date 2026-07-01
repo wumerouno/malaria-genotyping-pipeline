@@ -1,0 +1,23 @@
+# Snakemake configuration file for FalciTranscriptoPipe
+plasmodb_release: 65
+
+# Paths to metadata
+samples_tsv: "config/samples.tsv"
+
+# Output directories
+reference_dir: "data/reference"
+qc_dir: "results/qc"
+quant_dir: "results/quantification"
+de_dir: "results/differential_expression"
+plot_dir: "results/plots"
+
+# Salmon indexing and quasi-mapping parameters
+salmon_threads: 4
+salmon_bootstrap_samples: 30
+
+# R Differential Expression parameters
+padj_cutoff: 0.05
+lfc_cutoff: 1.0
+design_formula: "~ stage" # Contrast variable in samples.tsv
+reference_level: "Ring"    # Baseline stage for log fold change comparison
+comparison_level: "Trophozoite" # Level compared against the baseline

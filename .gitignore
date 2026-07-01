@@ -33,3 +33,11 @@ Desktop.ini
 /*.xlsx
 /*.docx
 /Final Dataset/
+
+# Agent directories
+.gemini/
+
+# Plasmodium transcriptomics pipeline runs
+plasmodium_transcriptomics/data/
+plasmodium_transcriptomics/results/
+plasmodium_transcriptomics/logs/

@@ -1,0 +1,22 @@
+name: falcitranscripto
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - snakemake>=7.22.0
+  - salmon>=1.10.0
+  - fastqc>=0.12.1
+  - multiqc>=1.14.0
+  - sra-tools>=3.0.3
+  - pandas>=1.5.3
+  - requests>=2.28.2
+  - r-base>=4.2.0
+  - r-essentials
+  - bioconductor-deseq2
+  - bioconductor-tximport
+  - bioconductor-annotationdbi
+  - r-pheatmap
+  - r-ggplot2
+  - r-ggrepel

@@ -1,0 +1,141 @@
+---
+title: "Plasmodium falciparum RNA-seq Differential Expression Report"
+author: "Bioinformatics Pipeline (FalciTranscriptoPipe)"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: flatly
+    highlight: tango
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(yaml)
+library(DT)
+library(ggplot2)
+library(pheatmap)
+
+# Load configurations
+config <- yaml::read_yaml("../config/config.yaml")
+```
+
+## 1. Executive Summary
+
+This report presents the transcriptomics (RNA-seq) analysis comparing different asexual stages of the human malaria parasite *Plasmodium falciparum* (3D7 strain). Specifically, we analyze the transcriptional transitions from the **Ring stage** (early development) to the **Trophozoite stage** (highly active metabolic and growth stage) using public dataset GSE273005.
+
+### Key Results
+- **Pipeline Method:** FastQC for raw read quality assessment, Salmon for decoy-aware transcript quantification against PlasmoDB 3D7 release 65 references, and DESeq2 for gene-level differential expression.
+- **Differential Expression:** Identified statistically significant differentially expressed genes (DEGs) based on False Discovery Rate (FDR) `< `r config$padj_cutoff` and absolute fold change `log2(FC) >= `r config$lfc_cutoff`.
+
+---
+
+## 2. Experimental Setup & Samples
+
+Below is the metadata table of the samples processed in this analysis, mapping run accessions to their biological conditions.
+
+```{r samples_metadata, echo=FALSE}
+samples <- read.delim("../config/samples.tsv", header = TRUE, sep = "\t")
+datatable(samples, options = list(pageLength = 5, dom = 't'), rownames = FALSE)
+```
+
+---
+
+## 3. Differential Expression Analysis (DESeq2)
+
+The differential expression was conducted using **DESeq2**. Transcripts quantified by Salmon were aggregated to the gene level using a dynamic transcript-to-gene mapping derived from the PlasmoDB reference names.
+
+### Top Differentially Expressed Genes
+
+Below are the top 25 differentially expressed genes ranked by statistical significance (adjusted p-value):
+
+```{r deg_table, echo=FALSE}
+de_results_file <- file.path("..", config$de_dir, "diff_exp_results.csv")
+if (file.exists(de_results_file)) {
+  de_results <- read.csv(de_results_file)
+  
+  # Format numeric columns for clean presentation
+  de_results$baseMean <- round(de_results$baseMean, 2)
+  de_results$log2FoldChange <- round(de_results$log2FoldChange, 3)
+  de_results$pvalue <- format.pval(de_results$pvalue, digits = 3)
+  de_results$padj <- format.pval(de_results$padj, digits = 3)
+  
+  datatable(head(de_results, 25), options = list(pageLength = 10), rownames = FALSE)
+} else {
+  cat("Differential expression results file not found. Run the pipeline first to generate results.\n")
+}
+```
+
+---
+
+## 4. Visualizations
+
+The following plots visualize sample clustering (PCA), the distribution of fold changes vs. significance (Volcano Plot), and the expression patterns of the top 50 most variable genes (Heatmap).
+
+### 4.1 Sample Clustering (PCA)
+
+The PCA plot shows the relationship between sample replicates and the separation between the **Ring** and **Trophozoite** stages.
+
+```{r pca_plot, echo=FALSE, fig.align='center', out.width='80%'}
+pca_path <- file.path("..", config$plot_dir, "pca_plot.png")
+if (file.exists(pca_path)) {
+  knitr::include_graphics(pca_path)
+} else {
+  cat("PCA plot not found. Run the pipeline to generate plots.\n")
+}
+```
+
+*Figure 1: PCA plot of replicates using variance-stabilized transcript counts.*
+
+### 4.2 Volcano Plot
+
+The volcano plot shows the statistical significance (adjusted p-value) versus magnitude of change (log2 fold change) for all genes. Red points represent upregulated genes, blue points represent downregulated genes, and top significant genes are labeled with their PlasmoDB Gene IDs.
+
+```{r volcano_plot, echo=FALSE, fig.align='center', out.width='80%'}
+volcano_path <- file.path("..", config$plot_dir, "volcano_plot.png")
+if (file.exists(volcano_path)) {
+  knitr::include_graphics(volcano_path)
+} else {
+  cat("Volcano plot not found. Run the pipeline to generate plots.\n")
+}
+```
+
+*Figure 2: Volcano plot comparing Trophozoite vs. Ring stage.*
+
+### 4.3 Gene Expression Heatmap
+
+This heatmap clusters the top 50 differentially expressed genes (based on p-value) across all samples, displaying row-standardized Z-scores of expression values.
+
+```{r heatmap_plot, echo=FALSE, fig.align='center', out.width='80%'}
+heatmap_path <- file.path("..", config$plot_dir, "heatmap_top50.png")
+if (file.exists(heatmap_path)) {
+  knitr::include_graphics(heatmap_path)
+} else {
+  cat("Heatmap plot not found. Run the pipeline to generate plots.\n")
+}
+```
+
+*Figure 3: Hierarchical clustering heatmap of the top 50 differentially expressed genes.*
+
+---
+
+## 5. Biological Discussion
+
+The transition from the Ring stage to the Trophozoite stage in *Plasmodium falciparum* represents the major growth and remodeling phase of the parasite's intraerythrocytic developmental cycle (IDC):
+
+1. **Upregulation of Invasion & Structural Proteins:** During the trophozoite and schizont stages, the parasite actively produces proteins involved in host cell remodeling (e.g., KAHRP) and red blood cell invasion (e.g., Merozoite Surface Proteins like *msp1*, *msp3*, and Apical Membrane Antigen 1 *ama1*).
+2. **Metabolic Accrual:** Trophozoites exhibit a massive increase in transcription of ribosomal proteins, DNA replication machinery, and hemoglobin digestion enzymes (like plasmepsins and falcipains) to support growth.
+3. **Antigenic Variation:** Genes belonging to multigene families (such as *var* genes) show stage-specific expression profiles, typically peaking in the ring/early trophozoite stage.
+
+---
+
+## 6. Reproducibility & Pipeline Environment
+
+This analysis is fully reproducible and was executed using a Snakemake workflow manager. 
+- **Genome Reference:** *Plasmodium falciparum* 3D7 (PlasmoDB Release 65)
+- **Quantification:** Salmon (v1.10.0, decoy-aware)
+- **Differential Expression:** DESeq2 (v1.38+) in R
+- **Pipeline Orchestration:** Snakemake (v7.22+)
