@@ -1,0 +1,22 @@
+{
+  "pdb_id": "1J3I",
+  "chain": "A",
+  "defined_by_native_ligand": {
+    "name": "WR99210",
+    "resname": "WRA",
+    "chain": "A",
+    "resseq": 609
+  },
+  "center": {
+    "x": 28.021,
+    "y": 6.081,
+    "z": 59.787
+  },
+  "size": {
+    "x": 22.0,
+    "y": 22.0,
+    "z": 22.0
+  },
+  "padding_angstrom": 4.0,
+  "minimum_box_size_angstrom": 22.0
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "chain": "A",
+    "resname": "ILE",
+    "resseq": 14,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 2.983
+  },
+  {
+    "chain": "A",
+    "resname": "CYS",
+    "resseq": 15,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.259
+  },
+  {
+    "chain": "A",
+    "resname": "ALA",
+    "resseq": 16,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.903
+  },
+  {
+    "chain": "A",
+    "resname": "LEU",
+    "resseq": 46,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.036
+  },
+  {
+    "chain": "A",
+    "resname": "TRP",
+    "resseq": 48,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.515
+  },
+  {
+    "chain": "A",
+    "resname": "LYS",
+    "resseq": 49,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.46
+  },
+  {
+    "chain": "A",
+    "resname": "ASP",
+    "resseq": 54,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 2.735
+  },
+  {
+    "chain": "A",
+    "resname": "MET",
+    "resseq": 55,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.564
+  },
+  {
+    "chain": "A",
+    "resname": "TYR",
+    "resseq": 57,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.924
+  },
+  {
+    "chain": "A",
+    "resname": "PHE",
+    "resseq": 58,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.5
+  },
+  {
+    "chain": "A",
+    "resname": "SER",
+    "resseq": 108,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.87
+  },
+  {
+    "chain": "A",
+    "resname": "SER",
+    "resseq": 111,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.163
+  },
+  {
+    "chain": "A",
+    "resname": "ILE",
+    "resseq": 112,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.815
+  },
+  {
+    "chain": "A",
+    "resname": "PRO",
+    "resseq": 113,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.665
+  },
+  {
+    "chain": "A",
+    "resname": "PHE",
+    "resseq": 116,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.701
+  },
+  {
+    "chain": "A",
+    "resname": "LEU",
+    "resseq": 119,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.43
+  },
+  {
+    "chain": "A",
+    "resname": "ILE",
+    "resseq": 164,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 2.997
+  },
+  {
+    "chain": "A",
+    "resname": "GLY",
+    "resseq": 165,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 4.775
+  },
+  {
+    "chain": "A",
+    "resname": "TYR",
+    "resseq": 170,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.203
+  },
+  {
+    "chain": "A",
+    "resname": "THR",
+    "resseq": 185,
+    "icode": "",
+    "min_distance_to_native_ligand_angstrom": 3.621
+  }
+]

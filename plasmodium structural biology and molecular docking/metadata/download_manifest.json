@@ -1,0 +1,47 @@
+{
+  "generated_at_utc": "2026-07-01T03:58:39.848144+00:00",
+  "receptor": {
+    "url": "https://files.rcsb.org/download/1J3I.pdb",
+    "path": "data/raw/receptors/1J3I.pdb",
+    "status": "downloaded",
+    "bytes": 899748
+  },
+  "ligands": [
+    {
+      "name": "wr99210",
+      "cid": 121750,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/121750/SDF?record_type=3d",
+      "path": "data/raw/ligands/wr99210.sdf",
+      "status": "downloaded",
+      "bytes": 7143,
+      "record_type": "3d"
+    },
+    {
+      "name": "pyrimethamine",
+      "cid": 4993,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4993/SDF?record_type=3d",
+      "path": "data/raw/ligands/pyrimethamine.sdf",
+      "status": "downloaded",
+      "bytes": 5540,
+      "record_type": "3d"
+    },
+    {
+      "name": "cycloguanil",
+      "cid": 9049,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/9049/SDF?record_type=3d",
+      "path": "data/raw/ligands/cycloguanil.sdf",
+      "status": "downloaded",
+      "bytes": 5466,
+      "record_type": "3d"
+    },
+    {
+      "name": "methotrexate",
+      "cid": 126941,
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/126941/SDF?record_type=3d",
+      "path": "data/raw/ligands/methotrexate.sdf",
+      "status": "downloaded",
+      "bytes": 8328,
+      "record_type": "3d"
+    }
+  ]
+}

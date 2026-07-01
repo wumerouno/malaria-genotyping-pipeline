@@ -1,0 +1,15 @@
+/.gitattributes text eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.log text eol=lf
+*.md text eol=lf
+*.pdb text eol=lf
+*.pdbqt text eol=lf
+*.pml text eol=lf
+*.py text eol=lf
+*.sdf text eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.pse binary

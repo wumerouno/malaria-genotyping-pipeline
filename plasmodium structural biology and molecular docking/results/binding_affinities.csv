@@ -1,0 +1,5 @@
+rank,ligand,pubchem_cid,vina_affinity_kcal_mol,rmsd_lb,rmsd_ub,pose_file,source
+1,Methotrexate,126941,-10.824,0.0,0.0,results/poses/methotrexate_docked.pdbqt,https://pubchem.ncbi.nlm.nih.gov/compound/126941
+2,WR99210,121750,-9.066,0.0,0.0,results/poses/wr99210_docked.pdbqt,https://pubchem.ncbi.nlm.nih.gov/compound/121750
+3,Cycloguanil,9049,-8.188,0.0,0.0,results/poses/cycloguanil_docked.pdbqt,https://pubchem.ncbi.nlm.nih.gov/compound/9049
+4,Pyrimethamine,4993,-7.913,0.0,0.0,results/poses/pyrimethamine_docked.pdbqt,https://pubchem.ncbi.nlm.nih.gov/compound/4993

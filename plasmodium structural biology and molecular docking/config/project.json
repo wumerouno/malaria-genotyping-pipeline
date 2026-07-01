@@ -1,0 +1,53 @@
+{
+  "project": "plasmodium-structural-biology-molecular-docking",
+  "receptor": {
+    "pdb_id": "1J3I",
+    "title": "Wild-type Plasmodium falciparum DHFR-TS complexed with WR99210, NADPH, and dUMP",
+    "source_url": "https://files.rcsb.org/download/1J3I.pdb",
+    "rcsb_url": "https://www.rcsb.org/structure/1J3I",
+    "chain": "A",
+    "native_ligand": {
+      "name": "WR99210",
+      "resname": "WRA",
+      "chain": "A",
+      "resseq": 609
+    }
+  },
+  "ligands": [
+    {
+      "name": "wr99210",
+      "label": "WR99210",
+      "cid": 121750,
+      "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/121750"
+    },
+    {
+      "name": "pyrimethamine",
+      "label": "Pyrimethamine",
+      "cid": 4993,
+      "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/4993"
+    },
+    {
+      "name": "cycloguanil",
+      "label": "Cycloguanil",
+      "cid": 9049,
+      "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/9049"
+    },
+    {
+      "name": "methotrexate",
+      "label": "Methotrexate",
+      "cid": 126941,
+      "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/126941"
+    }
+  ],
+  "preparation": {
+    "active_site_cutoff_angstrom": 5.0,
+    "ph": 7.4
+  },
+  "docking": {
+    "box_padding_angstrom": 4.0,
+    "minimum_box_size_angstrom": 22.0,
+    "exhaustiveness": 16,
+    "num_modes": 9,
+    "energy_range": 4
+  }
+}

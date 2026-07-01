@@ -1,0 +1,4 @@
+python3 --version: Python 3.10.12
+vina --version: AutoDock Vina v1.2.3
+obabel -V: Open Babel 3.1.1 -- Feb  7 2022 -- 06:51:49
+pymol -cq -d quit: PyMOL>quit
